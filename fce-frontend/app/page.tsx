@@ -61,13 +61,8 @@ export default function Home() {
 
         <Container className="relative grid gap-12 py-14 lg:grid-cols-2 lg:py-20">
           <div className="max-w-xl">
-            <div className="hero-in" style={{ ["--delay" as string]: "0ms" }}>
-              <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-sm font-medium text-brand ring-1 ring-inset ring-brand/15 backdrop-blur">
-                <span className="size-1.5 rounded-full bg-brand" /> {site.name} · Honiara
-              </p>
-            </div>
             <h1
-              className="hero-in mt-6 text-[3rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl xl:text-[5.5rem]"
+              className="hero-in text-[3rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl xl:text-[5.5rem]"
               style={{ ["--delay" as string]: "120ms" }}
             >
               Healthcare starts{" "}
