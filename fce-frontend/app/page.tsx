@@ -1,174 +1,225 @@
-import React from 'react';
-import {
-  Phone, Mail, MapPin, CheckCircle2,
-  Truck, Package, ShieldCheck, Activity,
-  Stethoscope, Pill
-} from 'lucide-react';
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, ChevronDown, Phone } from "lucide-react";
+import { site, telHref, formatPhone } from "@/lib/site";
+import { people, products, retailServices, wholesaleServices } from "@/lib/content";
+import { ButtonLink, Container, Eyebrow } from "@/components/ui";
+import Reveal from "@/components/Reveal";
+import counter from "@/public/images/pharmacy-counter.jpg";
+import warehouse from "@/public/images/warehouse.jpg";
+import stockroom from "@/public/images/stockroom.jpg";
+
+const audiences = [
+  {
+    id: "retail",
+    label: "For patients and families",
+    title: "Retail pharmacy",
+    text: "Personalised, compassionate care from pharmacists who take the time to answer your questions.",
+    items: retailServices.slice(0, 4),
+  },
+  {
+    id: "wholesale",
+    label: "For clinics and pharmacies",
+    title: "Wholesale supply",
+    text: "A dependable supply partner for healthcare providers, with support from people who know the stock.",
+    items: wholesaleServices.slice(0, 4),
+  },
+];
+
+const highlights = [
+  { value: "Retail & wholesale", label: "One supplier for patients and providers" },
+  { value: "Cold chain", label: "Dedicated staff for temperature-sensitive stock" },
+  { value: "Qualified team", label: "Pharmacists, nurses and doctors" },
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 p-2 rounded-lg">
-              <Pill className="text-white" size={24} />
-            </div>
-            <span className="text-xl font-bold tracking-tight">FAMILY CARE <span className="text-blue-600">PHARMACY</span></span>
-          </div>
-          <div className="hidden md:flex gap-8 font-medium text-slate-600">
-            <a href="#services" className="hover:text-blue-600 transition">Services</a>
-            <a href="#products" className="hover:text-blue-600 transition">Products</a>
-            <a href="#about" className="hover:text-blue-600 transition">About Us</a>
-            <a href="#contact" className="hover:text-blue-600 transition">Contact</a>
-          </div>
-          <a href="tel:+6777470344" className="bg-blue-600 text-white px-5 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition flex items-center gap-2">
-            <Phone size={18} /> Call Now
-          </a>
-        </div>
-      </nav>
+    <>
+      {/* Hero: fills the viewport below the 4rem sticky header */}
+      <section className="relative isolate flex min-h-[calc(100svh-4rem)] items-center overflow-hidden border-b border-line">
+        {/* Soft gradient glows behind the text */}
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_40rem_at_-10%_-10%,#dbe8ff_0%,transparent_60%),radial-gradient(40rem_30rem_at_45%_110%,#e6f0ff_0%,transparent_65%)]" />
 
-      {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-blue-600 uppercase bg-blue-50 rounded-full">
-              Your Health, Our Priority
+        {/* Full-bleed image on the right (desktop) */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-0 -z-10 hidden w-[56%] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_38%)] lg:block"
+        >
+          <Image
+            src={counter}
+            alt=""
+            fill
+            sizes="56vw"
+            placeholder="blur"
+            loading="eager"
+            fetchPriority="high"
+            className="hero-zoom object-cover"
+          />
+          {/* The mask fades the left edge into the page; this adds a blue tint towards the bottom */}
+          <div className="absolute inset-0 bg-linear-to-t from-brand/55 via-brand/10 to-transparent mix-blend-multiply" />
+        </div>
+
+        <Container className="relative grid gap-12 py-14 lg:grid-cols-2 lg:py-20">
+          <div className="max-w-xl">
+            <div className="hero-in" style={{ ["--delay" as string]: "0ms" }}>
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-sm font-medium text-brand ring-1 ring-inset ring-brand/15 backdrop-blur">
+                <span className="size-1.5 rounded-full bg-brand" /> {site.name} · Honiara
+              </p>
             </div>
-            <h1 className="text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Leading Pharmaceutical <br />
-              <span className="text-blue-600">Services in Honiara</span>
+            <h1
+              className="hero-in mt-6 text-[3rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl xl:text-[5.5rem]"
+              style={{ ["--delay" as string]: "120ms" }}
+            >
+              Healthcare starts{" "}
+              <span className="bg-linear-to-r from-brand via-blue-500 to-sky-400 bg-clip-text pb-2 text-transparent">at home.</span>
             </h1>
-            <p className="text-lg text-slate-600 mb-8 max-w-lg">
-              FCE Co Ltd (Family Care Pharmacy) provides premium retail pharmacy services and wholesale medical distribution across the Solomon Islands.
+            <p
+              className="hero-in mt-7 text-lg leading-relaxed text-muted md:text-xl md:leading-relaxed"
+              style={{ ["--delay" as string]: "240ms" }}
+            >
+              Personalised, compassionate pharmacy care for every member of your family, and reliable wholesale supply for
+              clinics and pharmacies across the Solomon Islands.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition">
-                Explore Wholesale
-              </button>
-              <button className="px-8 py-4 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 transition">
-                Retail Services
-              </button>
+            <div className="hero-in mt-10 flex flex-wrap gap-3" style={{ ["--delay" as string]: "360ms" }}>
+              <ButtonLink href={telHref(site.phones[0])} className="shadow-[0_10px_30px_-10px_rgba(29,78,216,0.7)]">
+                <Phone size={16} /> Call {formatPhone(site.phones[0])}
+              </ButtonLink>
+              <ButtonLink href="/contact" variant="secondary">
+                Wholesale enquiry <ArrowRight size={16} />
+              </ButtonLink>
             </div>
+
+            <dl className="hero-in mt-14 grid gap-6 border-t border-ink/10 pt-8 sm:grid-cols-3" style={{ ["--delay" as string]: "480ms" }}>
+              {highlights.map((h) => (
+                <div key={h.value}>
+                  <dt className="font-semibold">{h.value}</dt>
+                  <dd className="mt-1 text-sm leading-snug text-muted">{h.label}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <div className="relative">
-            <div className="bg-blue-100 rounded-3xl h-[500px] w-full object-cover shadow-2xl overflow-hidden">
-              {/* Replace with your pharmacy interior image */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent" />
-              <div className="flex items-center justify-center h-full text-slate-400 italic">
-                Pharmacy Interior Image
-              </div>
-            </div>
+
+          {/* Mobile/tablet: image below the text */}
+          <div className="relative overflow-hidden rounded-2xl lg:hidden">
+            <Image
+              src={counter}
+              alt="The counter and shelves inside Family Care Pharmacy"
+              className="aspect-[4/3] w-full object-cover"
+              sizes="100vw"
+              placeholder="blur"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-brand/50 to-transparent mix-blend-multiply" />
           </div>
-        </div>
+
+          {/* Desktop: floating card over the photo */}
+          <div className="relative hidden items-end justify-end lg:flex">
+            <figure
+              className="hero-in float-slow flex w-72 items-center gap-4 rounded-2xl bg-white/80 p-3 pr-5 shadow-[0_20px_50px_-20px_rgba(11,27,58,0.5)] ring-1 ring-white/60 backdrop-blur-md"
+              style={{ ["--delay" as string]: "700ms" }}
+            >
+              <Image src={warehouse} alt="Boxed stock in the FCE wholesale store" className="size-16 shrink-0 rounded-xl object-cover" sizes="64px" placeholder="blur" />
+              <figcaption className="text-sm leading-snug">
+                <span className="block font-semibold">Wholesale store</span>
+                <span className="text-muted">Supplying clinics and pharmacies nationwide</span>
+              </figcaption>
+            </figure>
+          </div>
+        </Container>
+
+        <a
+          href="#what-we-do"
+          aria-label="Scroll to services"
+          className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 animate-bounce rounded-full bg-white/80 p-2 text-muted shadow ring-1 ring-line backdrop-blur hover:text-brand motion-reduce:animate-none lg:block"
+        >
+          <ChevronDown size={18} />
+        </a>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Comprehensive Healthcare</h2>
-            <p className="text-slate-600">Supporting both individual patients and healthcare institutions.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Retail Card */}
-            <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <Activity size={28} />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Retail Pharmacy</h3>
-              <ul className="space-y-4 text-slate-600">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Prescription filling & medication management</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Patient counseling by professional pharmacists</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Health screenings and basic diagnostics</span>
-                </li>
+      {/* Retail / wholesale */}
+      <section id="what-we-do" aria-label="What we do" className="scroll-mt-16">
+        <Container className="grid md:grid-cols-2 md:divide-x md:divide-line">
+          {audiences.map((a, i) => (
+            <Reveal key={a.id} delay={i * 120} className={`py-14 md:py-20 ${i === 0 ? "md:pr-12" : "border-t border-line md:border-t-0 md:pl-12"}`}>
+              <Eyebrow>{a.label}</Eyebrow>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight">{a.title}</h2>
+              <p className="mt-3 max-w-md leading-relaxed text-muted">{a.text}</p>
+              <ul className="mt-8 border-t border-line">
+                {a.items.map((item) => (
+                  <li key={item.name} className="border-b border-line py-4">
+                    <p className="font-medium">{item.name}</p>
+                    <p className="mt-0.5 text-[15px] text-muted">{item.text}</p>
+                  </li>
+                ))}
               </ul>
-            </div>
-
-            {/* Wholesale Card */}
-            <div className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100">
-              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6">
-                <Truck size={28} />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Wholesale & Logistics</h3>
-              <ul className="space-y-4 text-slate-600">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Bulk pharmaceutical supply for clinics & pharmacies</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Cold chain management for temperature-sensitive drugs</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-green-500 mt-1" size={18} />
-                  <span>Specialized medical device procurement</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+              <Link href={`/services#${a.id}`} className="mt-6 inline-flex items-center gap-1 font-medium text-brand hover:text-brand-hover">
+                All {a.title.toLowerCase()} services <ArrowUpRight size={16} />
+              </Link>
+            </Reveal>
+          ))}
+        </Container>
       </section>
 
-      {/* Products Section */}
-      <section id="products" className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12 text-center">Product Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: "Pharmaceuticals", icon: Pill },
-              { name: "Medical Devices", icon: Stethoscope },
-              { name: "Test Kits", icon: ShieldCheck },
-              { name: "Consumables", icon: Package },
-            ].map((item, idx) => (
-              <div key={idx} className="p-8 border border-slate-100 rounded-2xl text-center hover:shadow-lg transition">
-                <item.icon className="mx-auto mb-4 text-blue-600" size={32} />
-                <h4 className="font-bold">{item.name}</h4>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Products */}
+      <section className="border-t border-line bg-linear-to-b from-subtle to-white">
+        <Container className="grid gap-12 py-16 md:py-20 lg:grid-cols-2 lg:items-center lg:gap-16">
+          <Reveal>
+            <Eyebrow>Our products</Eyebrow>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">Stocked for patients and healthcare providers.</h2>
+            <ol className="mt-8 border-t border-line">
+              {products.map((p, i) => (
+                <li key={p} className="flex items-baseline gap-5 border-b border-line py-4 text-lg">
+                  <span className="w-6 text-sm tabular-nums text-muted">{String(i + 1).padStart(2, "0")}</span>
+                  {p}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-6 text-muted">Can&apos;t see what you need? Ask us about specialty and hard-to-find medicines.</p>
+          </Reveal>
+          <Reveal delay={150} className="relative overflow-hidden rounded-2xl">
+            <Image
+              src={stockroom}
+              alt="Medicines and supplies stacked on shelves in the stockroom"
+              className="aspect-[4/3] w-full object-cover"
+              sizes="(min-width: 1024px) 45vw, 100vw"
+              placeholder="blur"
+            />
+            <div className="absolute inset-0 bg-linear-to-tr from-brand/40 to-transparent mix-blend-multiply" />
+          </Reveal>
+        </Container>
       </section>
 
-      {/* Footer / Contact */}
-      <footer id="contact" className="bg-slate-900 text-white pt-20 pb-10">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12 border-b border-slate-800 pb-16">
-          <div>
-            <h3 className="text-xl font-bold mb-6">Family Care Pharmacy</h3>
-            <p className="text-slate-400 leading-relaxed">
-              Dedicated to delivering excellence in healthcare logistics and clinical services across the Solomon Islands.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-6 underline decoration-blue-500 underline-offset-8">Visit Us</h4>
-            <div className="space-y-4 text-slate-400">
-              <p className="flex items-center gap-3"><MapPin size={20} /> Honiara, Solomon Islands</p>
-              <p className="flex items-center gap-3"><Mail size={20} /> famcarepharma@gmail.com</p>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold mb-6 underline decoration-blue-500 underline-offset-8">Contact Lines</h4>
-            <div className="space-y-4 text-slate-400">
-              <p>+677 7470344</p>
-              <p>+677 7593550</p>
-              <p>+677 7717748</p>
-            </div>
-          </div>
-        </div>
-        <div className="text-center pt-10 text-slate-500 text-sm">
-          © {new Date().getFullYear()} FCE Co Ltd. All Rights Reserved.
-        </div>
-      </footer>
-    </div>
+      {/* People */}
+      <section className="border-t border-line">
+        <Container className="grid gap-8 py-16 md:grid-cols-[1fr_2fr] md:py-20">
+          <Reveal>
+            <Eyebrow>Our people</Eyebrow>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Skilled, qualified staff.</h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <ul className="flex flex-wrap content-start gap-2">
+              {people.map((role) => (
+                <li key={role} className="rounded-lg bg-subtle px-4 py-2.5 ring-1 ring-inset ring-line">{role}</li>
+              ))}
+            </ul>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Wholesale CTA */}
+      <section className="relative isolate overflow-hidden bg-linear-to-br from-brand via-blue-700 to-blue-900 text-white">
+        <div aria-hidden="true" className="absolute -right-24 -top-32 -z-10 size-[28rem] rounded-full bg-sky-400/30 blur-3xl" />
+        <Container className="flex flex-col gap-8 py-16 md:flex-row md:items-center md:justify-between">
+          <Reveal>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Supplying a clinic or pharmacy?</h2>
+            <p className="mt-2 max-w-lg text-white/80">Competitive pricing, stock management and delivery. Tell us what you need.</p>
+          </Reveal>
+          <Reveal delay={120} className="self-start md:self-auto">
+            <ButtonLink href="/contact" variant="inverse">
+              Start a wholesale enquiry <ArrowRight size={16} />
+            </ButtonLink>
+          </Reveal>
+        </Container>
+      </section>
+    </>
   );
 }

@@ -1,60 +1,50 @@
-import { Input, TextArea, Button, Card } from "@heroui/react";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import type { Metadata } from "next";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { site, telHref, formatPhone } from "@/lib/site";
+import { Container, PageHeader } from "@/components/ui";
+import ContactForm from "./ContactForm";
+
+export const metadata: Metadata = { title: "Contact" };
 
 export default function ContactPage() {
     return (
-        <div className="max-w-7xl mx-auto py-16 px-6">
-            <h1 className="text-4xl font-bold mb-12 text-center">Get In Touch</h1>
+        <>
+            <PageHeader
+                eyebrow="Contact"
+                title="Get in touch"
+                intro="Questions about a prescription or a wholesale order? Call for the quickest answer, or send us a message."
+            />
 
-            <div className="grid lg:grid-cols-3 gap-8">
-                {/* Contact Info */}
-                <div className="lg:col-span-1 space-y-4">
-                    <Card className="border-none bg-slate-50 shadow-none">
-                        <CardBody className="p-6">
-                            <div className="space-y-6">
-                                <div className="flex items-start gap-4">
-                                    <MapPin className="text-blue-600 mt-1" />
-                                    <div>
-                                        <p className="font-bold">Our Location</p>
-                                        <p className="text-slate-600">Honiara, Solomon Islands</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <Mail className="text-blue-600 mt-1" />
-                                    <div>
-                                        <p className="font-bold">Email Us</p>
-                                        <p className="text-slate-600">famcarepharma@gmail.com</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <Phone className="text-blue-600 mt-1" />
-                                    <div>
-                                        <p className="font-bold">Phone Lines</p>
-                                        <p className="text-slate-600">7470344 / 7593550 / 7717748</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
+            <Container className="grid gap-12 py-16 md:py-20 lg:grid-cols-[1fr_1.8fr] lg:gap-16">
+                <div className="space-y-10">
+                    <section>
+                        <h2 className="flex items-center gap-2 font-semibold">
+                            <Phone size={17} className="text-brand" /> Call
+                        </h2>
+                        <ul className="mt-3 space-y-1">
+                            {site.phones.map((phone) => (
+                                <li key={phone}>
+                                    <a href={telHref(phone)} className="text-lg tabular-nums hover:text-brand">+677 {formatPhone(phone)}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                    <section>
+                        <h2 className="flex items-center gap-2 font-semibold">
+                            <Mail size={17} className="text-brand" /> Email
+                        </h2>
+                        <a href={`mailto:${site.email}`} className="mt-3 block break-all hover:text-brand">{site.email}</a>
+                    </section>
+                    <section>
+                        <h2 className="flex items-center gap-2 font-semibold">
+                            <MapPin size={17} className="text-brand" /> Visit
+                        </h2>
+                        <p className="mt-3">{site.location}</p>
+                    </section>
                 </div>
 
-                {/* Contact Form */}
-                <div className="lg:col-span-2">
-                    <Card className="p-4 shadow-sm border border-slate-100">
-                        <CardBody className="space-y-4">
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <Input label="Full Name" placeholder="Enter your name" variant="bordered" />
-                                <Input label="Email Address" placeholder="Enter your email" type="email" variant="bordered" />
-                            </div>
-                            <Input label="Subject" placeholder="General Inquiry / Wholesale" variant="bordered" />
-                            <TextArea label="Message" placeholder="How can we help you today?" variant="bordered" minRows={6} />
-                            <Button color="primary" size="lg" className="w-full font-bold">
-                                Send Message
-                            </Button>
-                        </CardBody>
-                    </Card>
-                </div>
-            </div>
-        </div>
+                <ContactForm />
+            </Container>
+        </>
     );
 }

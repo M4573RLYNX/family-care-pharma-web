@@ -1,45 +1,73 @@
-import { Card, CardHeader, CardBody, Divider } from "@heroui/react";
-import { CheckCircle, Truck, ShoppingBag, Microscope } from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowRight } from "lucide-react";
+import { additionalServices, retailServices, wholesaleServices, type Service } from "@/lib/content";
+import { ButtonLink, Container, Eyebrow, PageHeader } from "@/components/ui";
 
-const services = [
+export const metadata: Metadata = { title: "Services" };
+
+const sections: { id: string; label: string; title: string; text: string; items: Service[]; cta?: string }[] = [
     {
-        title: "Retail Pharmacy Services",
-        icon: <ShoppingBag className="text-blue-600" />,
-        items: ["Prescription Filling", "Patient Counseling", "OTC Medications", "Health Supplements"]
+        id: "retail",
+        label: "For patients and families",
+        title: "Retail pharmacy",
+        text: "Visit us for prescriptions, advice and everyday health products.",
+        items: retailServices,
+        cta: "Ask a pharmacist",
     },
     {
-        title: "Wholesale Distribution",
-        icon: <Truck className="text-green-600" />,
-        items: ["Bulk Medical Supplies", "Clinic Inventory Management", "Cold Chain Logistics", "Government Tenders"]
-    }
+        id: "wholesale",
+        label: "For clinics and pharmacies",
+        title: "Wholesale distribution",
+        text: "Supply and support for healthcare providers, clinics and other pharmacies.",
+        items: wholesaleServices,
+        cta: "Start a wholesale enquiry",
+    },
+    {
+        id: "more",
+        label: "In the community",
+        title: "Additional offerings",
+        text: "Working beyond the counter for better community health.",
+        items: additionalServices,
+    },
 ];
 
 export default function ServicesPage() {
     return (
-        <div className="max-w-7xl mx-auto py-16 px-6">
-            <h1 className="text-4xl font-bold mb-4">Our Services</h1>
-            <p className="text-slate-600 mb-12 text-lg">Comprehensive healthcare solutions for individuals and institutions.</p>
+        <>
+            <PageHeader
+                eyebrow="Services"
+                title="Retail and wholesale pharmacy, under one roof."
+                intro="A trusted partner for families who need care and for providers who need reliable supply."
+            />
 
-            <div className="grid md:grid-cols-2 gap-8">
-                {services.map((service, index) => (
-                    <Card key={index} className="p-4 shadow-sm border border-slate-100">
-                        <CardHeader className="flex gap-3">
-                            {service.icon}
-                            <h3 className="text-2xl font-bold">{service.title}</h3>
-                        </CardHeader>
-                        <Divider />
-                        <CardBody className="py-6">
-                            <ul className="space-y-4">
-                                {service.items.map((item, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-slate-700">
-                                        <CheckCircle size={18} className="text-blue-500" /> {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardBody>
-                    </Card>
+            <Container>
+                {sections.map((s, i) => (
+                    <section
+                        key={s.id}
+                        id={s.id}
+                        className={`grid scroll-mt-20 gap-8 py-14 md:grid-cols-[1fr_1.6fr] md:gap-16 md:py-20 ${i > 0 ? "border-t border-line" : ""}`}
+                    >
+                        <div className="md:sticky md:top-28 md:self-start">
+                            <Eyebrow>{s.label}</Eyebrow>
+                            <h2 className="mt-3 text-3xl font-semibold tracking-tight">{s.title}</h2>
+                            <p className="mt-3 max-w-sm leading-relaxed text-muted">{s.text}</p>
+                            {s.cta && (
+                                <ButtonLink href="/contact" variant="secondary" className="mt-8">
+                                    {s.cta} <ArrowRight size={16} />
+                                </ButtonLink>
+                            )}
+                        </div>
+                        <dl className="grid content-start gap-x-10 border-t border-line sm:grid-cols-2">
+                            {s.items.map((item) => (
+                                <div key={item.name} className="border-b border-line py-5">
+                                    <dt className="font-semibold">{item.name}</dt>
+                                    <dd className="mt-1 text-[15px] leading-relaxed text-muted">{item.text}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </section>
                 ))}
-            </div>
-        </div>
+            </Container>
+        </>
     );
 }
